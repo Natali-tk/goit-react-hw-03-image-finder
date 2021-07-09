@@ -6,6 +6,7 @@ import Searchbar from './components/Searchbar/Searchbar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
 
 import Loader from './components/Loader/Loader';
+
 class App extends Component {
   state = {
     images: [],
@@ -14,12 +15,18 @@ class App extends Component {
     showModal: false,
     searchQuery: '',
     page: 1,
-    selectedImage: null,
+    selectedImage: "",
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.searchQuery !== this.state.searchQuery) {
+    if (prevState.query !== this.state.query) {
       this.fetchImages();
+    }
+    if (this.state.page !== 2 && prevState.page !== this.state.page) {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth',
+      });
     }
   }
 
@@ -31,12 +38,11 @@ class App extends Component {
 
   handleSelectImage = imageUrl => {
     this.setState({ selectedImage: imageUrl });
+    this.toggleModal();
   };
 
   handleSubmit = query => {
-    this.setState({ searchQuery: query});
-    console.log(query);
-    console.log(this.searchQuery);
+    this.setState({ images: [], searchQuery: query, page: 1 });
   };
 
   fetchImages = () => {
@@ -60,15 +66,11 @@ class App extends Component {
         <Searchbar onSubmit={this.handleSubmit} />
 
         <ImageGallery images={images} onSelect={this.handleSelectImage} />
-        
+        {loading && <Loader />}
         {selectedImage && (
-          <Modal onClose={this.toggleModal}>
-            <img src={selectedImage} alt="#" />
+          <Modal onClose={this.toggleModal} largeImageURL={selectedImage}>   
           </Modal>
         )}
-        
-        {loading && <Loader />}
-        
         <ToastContainer />
       </>
     );
