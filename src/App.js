@@ -43,12 +43,14 @@ class App extends Component {
 
   handleSubmit = query => {
     this.setState({ images: [], searchQuery: query, page: 1 });
+    console.log(query);
+    console.log(this.state.searchQuery);
   };
 
   fetchImages = () => {
-    const { page, searchQuery } = this.state;
+    const { page} = this.state;
     this.setState({ isLoading: true });
-    Api.fetchImages(searchQuery, page)
+    Api.fetchImages(page)
       .then(hits => {
         this.setState(prevState => ({
           images: [...prevState.images, ...hits],
