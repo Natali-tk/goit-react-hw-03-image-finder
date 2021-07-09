@@ -1,11 +1,18 @@
-import React from 'react';
-const Button=({children, onClick})=>{
-    return(
-        <button type="button" onClick={onClick}>{children}</button>
-    )
-}
-Button.defaultProps={
-    onClick:()=>null,
-    children:null,
-}
+import React from "react";
+import s from './Button.module.css';
+import PropTypes from 'prop-types';
+
+const Button = ({ fetchImages}) => {
+  return (
+    <button className={s.button} type="button" onClick={fetchImages}>
+     Load more
+    </button>
+  );
+};
+
 export default Button;
+
+
+Button.propTypes = {
+    fetchImages: PropTypes.func.isRequired
+}

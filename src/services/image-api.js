@@ -8,7 +8,7 @@ const url='https://pixabay.com/api/';
     .get(
         `${url}?q=${searchQuery}&page=${page}&key=${key}&image_type=photo&orientation=horizontal&per_page=12`
         )
-        .then(({data})=>data.hits)
+        .then(response=>response.data.hits)
 };
 
 
