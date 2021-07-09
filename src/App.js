@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
 import Api from './services/image-api';
 import Modal from './components/Modal/Modal';
 import Searchbar from './components/Searchbar/Searchbar';
@@ -72,7 +71,6 @@ class App extends Component {
         {showModal && (
         <Modal onClose={this.toggleModal} largeImageURL={selectedImage}/>   
         )}
-        <ToastContainer />
       </>
     );
   }
@@ -81,20 +79,5 @@ class App extends Component {
 export default App;
 
 
-
-// render() {
-//   const { images, loading, error, showModal } = this.state;
-//   return (
-//     <>
-//      {error && <h2>No match!</h2>}
-//       <Searchbar onSubmit={this.handleSubmit} />
-//       {loading && <Loader />}
-//       <ImageGallery images={images} onSelect={this.handleSelectImage} />
-//       {images.length > 0 && <Button fetchImages={this.fetchImages} />}
-//       {showModal && <Modal selectedImage={this.state.selectedImage} onClose={this.toggleModal} />}
-//       <ToastContainer />
-//     </>
-//   );
-// }
 
 

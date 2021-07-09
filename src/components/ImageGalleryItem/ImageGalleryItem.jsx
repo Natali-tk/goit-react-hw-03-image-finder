@@ -9,7 +9,7 @@ const ImageGalleryItem = ({ webformatURL,largeImageURL,alt="",getLargeImageURL})
       <img
         src={webformatURL}
         alt={alt}
-        className={s.ImageGalleryItem_image} 
+        className={s.galleryItemImage} 
         onClick={()=>getLargeImageURL(largeImageURL)} 
       />
     </li>

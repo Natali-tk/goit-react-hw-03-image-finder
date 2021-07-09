@@ -5,7 +5,7 @@ import s from './ImageGallery.module.css';
 
 const ImageGallery = ({images,onSelect}) => {
   return (
-    <ul className={s.ImageGallery} >
+    <ul className={s.imageGalleryList} >
         {images.map(image=>(
         
         <ImageGalleryItem 
