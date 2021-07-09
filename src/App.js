@@ -1,58 +1,78 @@
-
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { ToastContainer } from 'react-toastify';
+import Api from './services/image-api';
 import Modal from './components/Modal/Modal';
+import Searchbar from './components/Searchbar/Searchbar';
+import ImageGallery from './components/ImageGallery/ImageGallery';
 
+import Loader from './components/Loader/Loader';
 class App extends Component {
   state = {
+    images: [],
+    loading: false,
+    error: null,
     showModal: false,
+    searchQuery: '',
+    page: 1,
+    selectedImage: null,
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.searchQuery !== this.state.searchQuery) {
+      this.fetchImages();
+    }
   }
+
   toggleModal = () => {
     this.setState(({ showModal }) => ({
-      showMOdal: !showModal,
+      showModal: !showModal,
     }));
   };
 
+  handleSelectImage = imageUrl => {
+    this.setState({ selectedImage: imageUrl });
+  };
+
+  handleSubmit = query => {
+    this.setState({ searchQuery: query});
+    console.log(query);
+    console.log(this.searchQuery);
+  };
+
+  fetchImages = () => {
+    const { page, searchQuery } = this.state;
+    this.setState({ isLoading: true });
+    Api.fetchImages(searchQuery, page)
+      .then(hits => {
+        this.setState(prevState => ({
+          images: [...prevState.images, ...hits],
+          page: prevState.page + 1,
+        }));
+      })
+      .catch(error => this.setState({ error: 'No match!' }))
+      .finally(() => this.setState({ isLoading: false }));
+  };
+
   render() {
+    const { images, loading, selectedImage } = this.state;
     return (
       <>
-        <Modal onClose={this.toggleModal} />
+        <Searchbar onSubmit={this.handleSubmit} />
+
+        <ImageGallery images={images} onSelect={this.handleSelectImage} />
+        
+        {selectedImage && (
+          <Modal onClose={this.toggleModal}>
+            <img src={selectedImage} alt="#" />
+          </Modal>
+        )}
+        
+        {loading && <Loader />}
+        
+        <ToastContainer />
       </>
     );
   }
-};
+}
 
 export default App;
-
-
-
-
-
-
-
-
-
-// import logo from './logo.svg';
-// import './App.css';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
