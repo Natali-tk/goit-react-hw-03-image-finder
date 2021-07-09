@@ -48,9 +48,9 @@ class App extends Component {
   };
 
   fetchImages = () => {
-    const { page} = this.state;
-    this.setState({ isLoading: true });
-    Api.fetchImages(page)
+    const {searchQuery, page} = this.state;
+    this.setState({ loading: true });
+    Api.fetchImages(searchQuery, page)
       .then(hits => {
         this.setState(prevState => ({
           images: [...prevState.images, ...hits],
@@ -58,7 +58,7 @@ class App extends Component {
         }));
       })
       .catch(error => this.setState({ error: 'No match!' }))
-      .finally(() => this.setState({ isLoading: false }));
+      .finally(() => this.setState({ loading: false }));
   };
 
   render() {
