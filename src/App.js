@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import Api from './services/image-api';
 import Modal from './components/Modal/Modal';
 import Searchbar from './components/Searchbar/Searchbar';
@@ -42,8 +45,7 @@ class App extends Component {
 
   handleSubmit = query => {
     this.setState({ images: [], searchQuery: query, page: 1 });
-    console.log(query);
-    console.log(this.state.searchQuery);
+   
   };
 
   fetchImages = () => {
@@ -56,14 +58,15 @@ class App extends Component {
           page: prevState.page + 1,
         }));
       })
-      .catch(error => this.setState({ error: 'No match!' }))
+      .catch(error => this.setState({ error:toast.error('No match!')}))
       .finally(() => this.setState({ loading: false }));
   };
 
   render() {
-    const { images, loading, selectedImage,showModal } = this.state;
+    const { images, loading, selectedImage,showModal,error} = this.state;
     return (
       <>
+        {error && toast.error('No match!')}
         <Searchbar onSubmit={this.handleSubmit} />
         {loading && <Loader />}
         <ImageGallery images={images} onSelect={this.handleSelectImage} />
@@ -71,6 +74,7 @@ class App extends Component {
         {showModal && (
         <Modal onClose={this.toggleModal} largeImageURL={selectedImage}/>   
         )}
+        <ToastContainer  position="bottom-left" autoClose={3000}/>
       </>
     );
   }
