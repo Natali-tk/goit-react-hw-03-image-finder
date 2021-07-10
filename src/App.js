@@ -45,13 +45,12 @@ class App extends Component {
 
   handleSubmit = query => {
     this.setState({ images: [], searchQuery: query, page: 1 });
-    if(this.state.images.length===0){
-      toast.error('No match!');
-    }
+    
   };
 
   fetchImages = () => {
     const {searchQuery, page} = this.state;
+    
     this.setState({ loading: true });
     Api.fetchImages({searchQuery, page})
       .then(hits => {
@@ -62,6 +61,8 @@ class App extends Component {
       })
       .catch(error => this.setState({error:true}))
       .finally(() => this.setState({ loading: false }));
+
+      
   };
 
   render() {
