@@ -45,7 +45,9 @@ class App extends Component {
 
   handleSubmit = query => {
     this.setState({ images: [], searchQuery: query, page: 1 });
-   
+    if(this.state.images.length===0){
+      toast.error('No match!');
+    }
   };
 
   fetchImages = () => {
@@ -58,7 +60,7 @@ class App extends Component {
           page: prevState.page + 1,
         }));
       })
-      .catch(error => this.setState({ error:toast.error('No match!')}))
+      .catch(error => this.setState({error:true}))
       .finally(() => this.setState({ loading: false }));
   };
 
@@ -66,7 +68,7 @@ class App extends Component {
     const { images, loading, selectedImage,showModal,error} = this.state;
     return (
       <>
-        {error && toast.error('No match!')}
+        {error && toast.error('OOO, something is wrong!')}
         <Searchbar onSubmit={this.handleSubmit} />
         {loading && <Loader />}
         <ImageGallery images={images} onSelect={this.handleSelectImage} />
